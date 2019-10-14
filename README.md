@@ -1,4 +1,4 @@
-# Program 2: Where the *Magic* happens.
+# Program 2: Where the *Magic* Happens.
 
 ## Description
 

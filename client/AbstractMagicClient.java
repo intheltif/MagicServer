@@ -12,7 +12,7 @@ public abstract class AbstractMagicClient implements MagicClient {
     /** The default port on which a magic server listens. */
     public static final int DEFAULT_PORT = 5555;
 
-    /** The default port on which a magic server listens. */
+    /** The default flag to specify which cards to send. All is the default. */
     public static final String DEFAULT_FLAG = "-A";
     
     /** The host to connect to */

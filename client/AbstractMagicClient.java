@@ -10,7 +10,7 @@ package client;
 public abstract class AbstractMagicClient implements MagicClient {
 
     /** The default port on which a magic server listens. */
-    public static final int DEFAULT_PORT = 5511;
+    public static final int DEFAULT_PORT = 5555;
 
     /** The default port on which a magic server listens. */
     public static final String DEFAULT_FLAG = "-A";
@@ -106,10 +106,17 @@ public abstract class AbstractMagicClient implements MagicClient {
 
     } // end getFlag method
 
-    public abstract void printToStream(PrintStream out) {
+    /**
+     * Establishes a TCP connection to the host/port specified when this object
+     * was created, reads a continuous stream of random cards from the socket's
+     * input stream, and prints that data to the specified output stream.
+     *
+     * @param out The stream to which to write the random cards received.
+     *
+     * @throws IOException if there is an I/O error while receiving the data.
+     */
+    public abstract void printToStream(PrintStream out);
 
-        // TODO Leave abstract. Figure out what that means again.
 
-    } // end abstract printToStream method
 
 } // end AbstractMagicClient abstract class

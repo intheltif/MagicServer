@@ -23,7 +23,12 @@ public class MagicClientDriver {
      */
     public static void main(String[] args) {
 
-        // Do main stuff
+        // Check for correct # of args
+        if(args.length < 2 || args.length > 4) {
+            System.out.println("Usage: MagicClientDriver <PROTOCOL> " + 
+                "<IP/HOST> [<PORT> [<FLAG>]]");
+        } // end usage check
+
 
     } // end main method
 

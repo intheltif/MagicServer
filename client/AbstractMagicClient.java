@@ -10,10 +10,10 @@ package client;
 public abstract class AbstractMagicClient implements MagicClient {
 
     /** The default port on which a magic server listens. */
-    private static final int DEFAULT_PORT;
+    public static final int DEFAULT_PORT = 5511;
 
     /** The default port on which a magic server listens. */
-    private static final String DEFAULT_FLAG;
+    public static final String DEFAULT_FLAG = "-A";
     
     /** The host to connect to */
     private InetAddress host;

@@ -1,5 +1,10 @@
 package server;
 
+import common.Card;
+import common.Type;
+import java.io.FileNotFoundException;
+
+
 /**
  * Class that defines the type of cards that can be returned for a deck in
  * Magic the Gathering.
@@ -29,7 +34,7 @@ public class CardSource {
      *
      * @param type The type of card allowed to be sent via the network.
      */
-    protected void setCardType(CardType type) {
+    protected void setCardType(Type type) {
 
         // TODO finish setCardType method
 
@@ -52,6 +57,9 @@ public class CardSource {
     public Card next() {
 
         // TODO finish next method
+        Card card = null;
+
+        return card;
 
     } // end next method
 

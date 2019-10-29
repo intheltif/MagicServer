@@ -1,5 +1,7 @@
 package server;
 
+import java.io.FileNotFoundException;
+
 /**
  * An abstract class that contains fields and methods that may be common to
  * implementations of the 'chargen' server
@@ -8,22 +10,25 @@ public abstract class AbstractMagicServer implements MagicServer {
 
     // TODO Document first three constant fields
 
-    protected static final int THREE_TYPES;
+    /** The number of cards to be sent for 3 types of cards */
+    protected static final int THREE_TYPES = 60;
 
-    protected static final int TWO_TYPES;
+    /** The number of cards to be sent for 2 types of cards */
+    protected static final int TWO_TYPES = 40;
 
-    protected static final int ONE_TYPE;
+    /** The number of cards to be sent for 1 type of card */
+    protected static final int ONE_TYPE = 20;
 
     // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     
     /** The default port on which a magic server listens */
-    public static final int DEFAULT_PORT;
+    public static final int DEFAULT_PORT = 5500;
     
     /** The default source from which to send cards to clients */
-    public static final CardSource DEFAULT_SOURCE;
+    public static final CardSource DEFAULT_SOURCE = new CardSource();
     
     /** The default number of items to send back */
-    public static final int NUM_ITEMS;
+    public static final int NUM_ITEMS = TWO_TYPES;
 
     private int port;
 
@@ -54,7 +59,7 @@ public abstract class AbstractMagicServer implements MagicServer {
      *
      * @throws FileNotFoundException If the source file cannot be found.
      */
-    public AbstractMagicServer(int port) thorws FileNotFoundException {
+    public AbstractMagicServer(int port) throws FileNotFoundException {
 
         this.port = port;
         this.source = DEFAULT_SOURCE;
@@ -192,10 +197,6 @@ public abstract class AbstractMagicServer implements MagicServer {
      * @throws MagicServerException if an error occurs while trying to listen
      *                              for connections.
      */
-    public abstract void listen() throws MagicServerException {
-
-        // TODO do stuff
-
-    } // end abstract listen method
+    public abstract void listen() throws MagicServerException;
 
 } // end AbstractMagicServer abstract class

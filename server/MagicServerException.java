@@ -17,7 +17,8 @@ public class MagicServerException extends Exception {
     private Throwable throwable;
 
     /**
-     * Creates a new <code>MagicServerException</code> with no message.
+     * Creates a new <code>MagicServerException</code> with no message or
+     * <code>Throwable</code> object wrapped inside it.
      */
     public MagicServerException() {
 
@@ -31,7 +32,7 @@ public class MagicServerException extends Exception {
      * message, and wraps the specified <code>Throwable</code> object.
      *
      * @param message   The message to be thrown with this exception.
-     * @param Throwable The <code>Throwable</code> object to be wrapped by this
+     * @param throwable The <code>Throwable</code> object to be wrapped by this
      *                  exception.
      */
     public MagicServerException(String message, Throwable throwable) {
@@ -45,7 +46,7 @@ public class MagicServerException extends Exception {
      * Creates a new <code>MagicServerException</code> that wraps the specified 
      * <code>Throwable</code> object.
      *
-     * @param Throwable The <code>Throwable</code> object to be wrapped by this
+     * @param throwable The <code>Throwable</code> object to be wrapped by this
      *                  exception.
      */
     public MagicServerException(Throwable throwable) {
@@ -54,5 +55,28 @@ public class MagicServerException extends Exception {
         this.throwable = throwable;
 
     } // end msg, throwable constructor
+
+    /**
+     * Returns a string containing the message for this
+     * <code>MagicException</code>.
+     *
+     * @return A string containing the message for this
+     *         <code>MagicException</code>
+     */
+    public String getMessage() {
+        return this.message;
+    }
+
+    /**
+     * Returns a <code>Throwable</code> object that this exception is the
+     * wrapper around. If this exception does not wrap a <code>Throwable</code>
+     * object, then null is returned.
+     *
+     * @return The <code>Throwable</code> object this exception wraps around.
+     *         May be null.
+     */
+    public Throwable getThrowable() {
+        return this.throwable;
+    }
 
 } // end MagicServerException class

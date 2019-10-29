@@ -1,5 +1,7 @@
 package server;
 
+import java.io.FileNotFoundException;
+
 /**
  * This class represents a concrete implementation of a magic server that uses
  * the TCP transport layer protocol.

@@ -1,5 +1,7 @@
 package common;
 
+import java.io.Serializable;
+
 /**
  * This class represents simple cards in the game of <em>Magic the Gathering
  * </em>.
@@ -52,7 +54,7 @@ public class Card implements Serializable {
         this.id = id;
         this.name = name;
         //TODO Maybe make toLowerCase(). Not sure yet.
-        this.type = Type.valueOf(type.toUpperCase());
+        this.type = Type.valueOf(type);
         this.mana = mana;
 
     } // end constructor w/ Type object parameter included

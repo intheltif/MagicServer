@@ -2,8 +2,13 @@ package server;
 
 import common.Card;
 import common.Type;
+
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -39,7 +44,8 @@ public class CardSource {
      */
     public CardSource() throws FileNotFoundException {
 
-        // TODO finish constructor
+        File cardFile = new File("./cards.csv");
+        buildDeck(cardFile);
 
     } //end CardSource constructor
     
@@ -77,6 +83,62 @@ public class CardSource {
         return card;
 
     } // end next method
+
+    /**
+     * Builds the deck of cards based on the file named "<em>cards.csv</em>".
+     *
+     * @param inputFile The file to use to build the deck.
+     */
+    private void buildDeck(File inputFile) {
+        try {
+            this.input = new Scanner(inputFile);
+        }catch(FileNotFoundException fnfe) {
+            //TODO maybe throw instead, change system.exit to constant value
+            System.err.println("The file 'cards.csv' could not be found.");
+            System.exit(1);
+        }
+
+        // While there is more to add, create a card and add it to our deck
+        while(input.hasNextLine()) {
+            try {
+                String line = input.nextLine();
+                String[] lineArray = line.split(",");
+
+                // Parse the line for the input we need
+                short id = Short.parseShort(lineArray[0]);
+                String name = lineArray[1];
+                Type type = getType(lineArray[2]);
+                String mana = lineArray[3];
+
+                this.deck.add(new Card(id, name, type, mana));
+            } catch(NoSuchElementException nsee) {
+                //finish catching
+            }
+        }
+
+        this.input.close();
+    }
+
+    /**
+     * //TODO Update this documentation
+     * Returns the enum type of the card based on if it matches a certain
+     * regex.
+     * @param typeStr The string to parse for certain words.
+     * @return The Type of card we found.
+     */
+    private Type getType(String typeStr) {
+        Type typeToReturn = Type.UNKNOWN;
+
+        if(typeStr.matches("/([Cc]reature)+|([Pp]laneswalker)+/gm")) {
+            typeToReturn = Type.CREATURE;
+        } else if(typeStr.matches("/ ([Aa]rtifact)+|([Ii]nstant)+|([Ee]nchantment)+|([Ss]orcery)+/gm")) {
+            typeToReturn = Type.SPELL;
+        } else if(typeStr.matches("/([Ll]and)+/gm")) {
+            typeToReturn = Type.LAND;
+        }
+
+        return typeToReturn;
+    }
 
     /**
      * Used for testing data input.

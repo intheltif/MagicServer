@@ -19,16 +19,15 @@ public abstract class AbstractMagicServer implements MagicServer {
     /** The number of cards to be sent for 1 type of card */
     protected static final int ONE_TYPE = 20;
 
-    // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    
     /** The default port on which a magic server listens */
-    public static final int DEFAULT_PORT = 5500;
+    private static final int DEFAULT_PORT = 5500;
     
     /** The default source from which to send cards to clients */
-    public static final CardSource DEFAULT_SOURCE = new CardSource();
+    //TODO Change this to an actual default soruce
+    private static final CardSource DEFAULT_SOURCE = null;
     
     /** The default number of items to send back */
-    public static final int NUM_ITEMS = TWO_TYPES;
+    private static final int NUM_ITEMS = ONE_TYPE;
 
     private int port;
 
@@ -160,9 +159,15 @@ public abstract class AbstractMagicServer implements MagicServer {
      * @param numItems The number of items to send back to the client.
      */
     protected void changeItemsToSend(int numItems) {
-        
-        // TODO perform checks that this number is in the correct range
-        this.numItemsToSend = numItems;
+
+        //TODO Make sure this is the correct check we should do here
+        if(numItems < ONE_TYPE) {
+            System.err.println("Unable to send less than 20 cards");
+        } else if(numItems > THREE_TYPES){
+            System.err.println("Unable to send more than 60 cards");
+        } else {
+            this.numItemsToSend = numItems;
+        }
 
     } // end changeItemsToSend method
 
@@ -187,8 +192,35 @@ public abstract class AbstractMagicServer implements MagicServer {
      */
     protected void setCardsReturned(String command) {
 
-        // TODO do stuff
+        // TODO Finish switch cases, use changeCardSource to choose which
+        //      cards are to be sent back.
+        switch (command) {
+            case "A":
+                changeItemsToSend(THREE_TYPES);
+                break;
 
+            case "C":
+            case "L":
+            case "S":
+                changeItemsToSend(ONE_TYPE);
+                break;
+
+            case "CL":
+            case "LC":
+                changeItemsToSend(TWO_TYPES);
+
+                break;
+
+            case"SL":
+            case "LS":
+                changeItemsToSend(TWO_TYPES);
+                break;
+
+            case "SC":
+            case "CS":
+                changeItemsToSend(TWO_TYPES);
+                break;
+        } // end switch statement
     } // end setCardsReturned method
 
     /**

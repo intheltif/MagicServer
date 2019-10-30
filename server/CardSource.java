@@ -3,6 +3,9 @@ package server;
 import common.Card;
 import common.Type;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
 
 
 /**
@@ -15,6 +18,18 @@ import java.io.FileNotFoundException;
 public class CardSource {
 
     // TODO Add fields as necessary.
+
+    /** The deck of Magic the Gathering cards */
+    private ArrayList<Card> deck;
+
+    /** The Scanner to read in the cards from the CSV */
+    private Scanner input;
+
+    /** Generates Random stuff TODO FIGURE OUT WHAT THIS IS???? */
+    private Random generator;
+
+    /** The card type */
+    private Type type;
     
     /**
      * Create a new <code>CardSource</code> object to store and choose cards

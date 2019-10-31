@@ -3,14 +3,14 @@ package server;
 import common.Card;
 import common.Type;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -43,9 +43,15 @@ public class CardSource {
      * @throws FileNotFoundException If the input file cannot be found
      */
     public CardSource() throws FileNotFoundException {
-        File cardFile = new File("./cards.csv");
-        buildDeck(cardFile);
-        this.generator = new Random();
+        try {
+            File cardFile = new File("/home/evert/Documents/classes/cs465/projects/project2/server/cards.csv");
+            this.deck = new ArrayList<>();
+            buildDeck(cardFile);
+            this.generator = new Random();
+        } catch(NullPointerException npe) {
+            System.err.println("Pathname is null.");
+            System.exit(1);
+        }
     } //end CardSource constructor
     
     /**
@@ -68,7 +74,7 @@ public class CardSource {
         // Displays the deck one card using the formatted String from the
         // Card's toString method.
         for(Card card : this.deck) {
-            System.out.printf(card.toString());
+            System.out.println(card.toString());
         }
 
     } // end displayDeck method
@@ -91,15 +97,10 @@ public class CardSource {
      * Builds the deck of cards based on the file named "<em>cards.csv</em>".
      *
      * @param inputFile The file to use to build the deck.
+     * @throws FileNotFoundException If the input file cannot be found
      */
-    private void buildDeck(File inputFile) {
-        try {
-            this.input = new Scanner(inputFile);
-        }catch(FileNotFoundException fnfe) {
-            //TODO maybe throw instead, change system.exit to constant value
-            System.err.println("The file 'cards.csv' could not be found.");
-            System.exit(1);
-        }
+    private void buildDeck(File inputFile) throws FileNotFoundException {
+        this.input = new Scanner(inputFile);
 
         // While there is more to add, create a card and add it to our deck
         while(input.hasNextLine()) {
@@ -109,8 +110,8 @@ public class CardSource {
 
                 // Parse the line for the input we need
                 short id = Short.parseShort(lineArray[0]);
-                String name = lineArray[1];
-                Type type = getType(lineArray[2]);
+                String name = lineArray[1].replaceAll("\"", "");
+                Type type = determineType(lineArray[2]);
                 String mana = lineArray[3];
 
                 this.deck.add(new Card(id, name, type, mana));
@@ -138,14 +139,28 @@ public class CardSource {
      * @param typeStr The string to parse for certain words.
      * @return The Type of card we found.
      */
-    private Type getType(String typeStr) {
+    private Type determineType(String typeStr) {
         Type typeToReturn = Type.UNKNOWN;
 
-        if(typeStr.matches("/([Cc]reature)+|([Pp]laneswalker)+/gm")) {
+        // pattern and matcher to find any word that is a creature in MTG
+        Pattern creature = Pattern.compile("([Cc]reature)+|([Pp]laneswalker)+");
+        Matcher findCreature = creature.matcher(typeStr);
+
+        // pattern and matcher to find any word that is a spell in MTG
+        Pattern spell = Pattern.compile("([Aa]rtifact)+|([Ii]nstant)+|([Ee]nchantment)+|([Ss]orcery)+");
+        Matcher findSpell = spell.matcher(typeStr);
+
+        // pattern and matcher to find any word that is a land in MTG
+        Pattern land = Pattern.compile("([Ll]and)+");
+        Matcher findLand = land.matcher(typeStr);
+
+        // Perform the boolean operations to find if the given string matches
+        // our types
+        if(findCreature.find()) {
             typeToReturn = Type.CREATURE;
-        } else if(typeStr.matches("/ ([Aa]rtifact)+|([Ii]nstant)+|([Ee]nchantment)+|([Ss]orcery)+/gm")) {
+        } else if(findSpell.find()) {
             typeToReturn = Type.SPELL;
-        } else if(typeStr.matches("/([Ll]and)+/gm")) {
+        } else if(findLand.find()) {
             typeToReturn = Type.LAND;
         }
 
@@ -160,6 +175,15 @@ public class CardSource {
     public static void main(String[] args) {
 
         // TODO finish main method
+        try {
+            CardSource cs = new CardSource();
+            for(int i=0; i < 50; i++) {
+                System.out.println(cs.next().toString());
+            }
+        } catch(FileNotFoundException fnfe) {
+            System.err.println("File not found. Dang...");
+            System.exit(1);
+        }
 
     } // end main method
 

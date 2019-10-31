@@ -93,7 +93,7 @@ public class Card implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format("%-32s: %-12s (%-6s)", this.name, this.type, this.mana);
+        return String.format("%32s: %12s (%6s)", this.name, this.type, this.mana);
     }
 
 } // end Card class

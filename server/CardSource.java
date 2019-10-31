@@ -62,7 +62,7 @@ public class CardSource {
      */
     protected void setCardType(Type type) {
 
-        // TODO finish setCardType method
+        this.type = type;
 
     } // end setCardType method
     
@@ -124,7 +124,7 @@ public class CardSource {
     }
 
     /**
-     * Returns Type of a card based on certain PCREs.
+     * Returns Type of a card based on certain Regular Expressions.
      *
      * If the specified String contains "Creature" or "Planeswalker", then the
      * CREATURE type is returned.
@@ -174,7 +174,6 @@ public class CardSource {
      */
     public static void main(String[] args) {
 
-        // TODO finish main method
         try {
             CardSource cs = new CardSource();
             for(int i=0; i < 50; i++) {

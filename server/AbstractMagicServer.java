@@ -20,12 +20,11 @@ public abstract class AbstractMagicServer implements MagicServer {
     protected static final int ONE_TYPE = 20;
 
     /** The default port on which a magic server listens */
-    private static final int DEFAULT_PORT = 5500;
+    private static final int DEFAULT_PORT = 5791;
     
     /** The default source from which to send cards to clients */
-    //TODO Change this to an actual default soruce
     private static final CardSource DEFAULT_SOURCE = null;
-    
+
     /** The default number of items to send back */
     private static final int NUM_ITEMS = ONE_TYPE;
 

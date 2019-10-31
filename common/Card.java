@@ -59,4 +59,41 @@ public class Card implements Serializable {
 
     } // end constructor w/ Type object parameter included
 
+    /**
+     * Returns the name of a card.
+     *
+     * @return The name of a card.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Returns the Type of a card. Types can be either Creature, Spell, or Land.
+     *
+     * @return The Type of a card
+     */
+    public Type getType() {
+        return type;
+    }
+
+    /**
+     * Returns the mana that a card requires to be played.
+     *
+     * @return The mana required by a card to be played.
+     */
+    public String getMana() {
+        return mana;
+    }
+
+    /**
+     * Returns a formatted String representation of a Card.
+     *
+     * @return The formatted String representation of a Card.
+     */
+    @Override
+    public String toString() {
+        return String.format("%-32s: %-12s (%-6s)", this.name, this.type, this.mana);
+    }
+
 } // end Card class

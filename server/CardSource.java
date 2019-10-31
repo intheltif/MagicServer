@@ -30,7 +30,7 @@ public class CardSource {
     /** The Scanner to read in the cards from the CSV */
     private Scanner input;
 
-    /** Generates Random stuff TODO FIGURE OUT WHAT THIS IS???? */
+    /** Generates a random integer for an index into the deck of cards */
     private Random generator;
 
     /** The card type */
@@ -43,15 +43,14 @@ public class CardSource {
      * @throws FileNotFoundException If the input file cannot be found
      */
     public CardSource() throws FileNotFoundException {
-
         File cardFile = new File("./cards.csv");
         buildDeck(cardFile);
-
+        this.generator = new Random();
     } //end CardSource constructor
     
     /**
      * Change the type of card allowed to be sent back to the client.
-     * Allowed thypes are specified by @see CardType.
+     * Allowed types are specified by @see Type
      *
      * @param type The type of card allowed to be sent via the network.
      */
@@ -66,7 +65,11 @@ public class CardSource {
      */
     public void displayDeck() {
 
-        // TODO finish displayDeck method
+        // Displays the deck one card using the formatted String from the
+        // Card's toString method.
+        for(Card card : this.deck) {
+            System.out.printf(card.toString());
+        }
 
     } // end displayDeck method
     
@@ -77,8 +80,8 @@ public class CardSource {
      */
     public Card next() {
 
-        // TODO finish next method
-        Card card = null;
+        int randomIndex = this.generator.nextInt(this.deck.size() - 1);
+        Card card = this.deck.get(randomIndex);
 
         return card;
 
@@ -120,9 +123,18 @@ public class CardSource {
     }
 
     /**
-     * //TODO Update this documentation
-     * Returns the enum type of the card based on if it matches a certain
-     * regex.
+     * Returns Type of a card based on certain PCREs.
+     *
+     * If the specified String contains "Creature" or "Planeswalker", then the
+     * CREATURE type is returned.
+     *
+     * If the specified String contains "Artifact", "Instant", "Enchantment",
+     * or "Sorcery", then the SPELL type is returned.
+     *
+     * If the specified String contains "Land", then the LAND type is returned.
+     *
+     * If none of the above Strings are matched, the UNKNOWN type is returned.
+     *
      * @param typeStr The string to parse for certain words.
      * @return The Type of card we found.
      */

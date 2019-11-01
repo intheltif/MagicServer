@@ -88,6 +88,10 @@ public class CardSource {
 
         int randomIndex = this.generator.nextInt(this.deck.size() - 1);
         Card card = this.deck.get(randomIndex);
+        while (!card.getType().equals(this.type)) {
+            randomIndex = this.generator.nextInt(this.deck.size() - 1);
+            card = this.deck.get(randomIndex);
+        }
 
         return card;
 
@@ -176,6 +180,7 @@ public class CardSource {
 
         try {
             CardSource cs = new CardSource();
+            cs.setCardType(Type.CREATURE);
             for(int i=0; i < 50; i++) {
                 System.out.println(cs.next().toString());
             }

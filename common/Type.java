@@ -29,5 +29,5 @@ public enum Type {
     private Type(String cardType) {
         this.cardType = cardType;
     }
-    
+
 } // end Type enumeration

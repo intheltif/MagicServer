@@ -23,6 +23,7 @@ public abstract class AbstractMagicServer implements MagicServer {
     private static final int DEFAULT_PORT = 5791;
     
     /** The default source from which to send cards to clients */
+    // TODO Figure out what to actually set this to?
     private static final CardSource DEFAULT_SOURCE = null;
 
     /** The default number of items to send back */
@@ -162,8 +163,12 @@ public abstract class AbstractMagicServer implements MagicServer {
         //TODO Make sure this is the correct check we should do here
         if(numItems < ONE_TYPE) {
             System.err.println("Unable to send less than 20 cards");
+            //TODO change to a constant value
+            System.exit(1);
         } else if(numItems > THREE_TYPES){
             System.err.println("Unable to send more than 60 cards");
+            //TODO change to a constant value
+            System.exit(1);
         } else {
             this.numItemsToSend = numItems;
         }

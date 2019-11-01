@@ -200,6 +200,9 @@ public abstract class AbstractMagicServer implements MagicServer {
         switch (command) {
             case "-A":
                 changeItemsToSend(THREE_TYPES);
+                this.source.setCardType(Type.LAND);
+                this.source.setCardType(Type.CREATURE);
+                this.source.setCardType(Type.SPELL);
                 break;
             case "-C":
                 changeItemsToSend(ONE_TYPE);
@@ -224,11 +227,15 @@ public abstract class AbstractMagicServer implements MagicServer {
             case "-SL":
             case "-LS":
                 changeItemsToSend(TWO_TYPES);
+                this.source.setCardType(Type.SPELL);
+                this.source.setCardType(Type.LAND);
                 break;
 
             case "-SC":
             case "-CS":
                 changeItemsToSend(TWO_TYPES);
+                this.source.setCardType(Type.CREATURE);
+                this.source.setCardType(Type.SPELL);
                 break;
             default:
                 System.out.println("Unrecognized flags present. Unable to change source.");

@@ -34,7 +34,7 @@ public class CardSource {
     private Random generator;
 
     /** The card type */
-    private Type type;
+    private ArrayList<Type> typeArray;
     
     /**
      * Create a new <code>CardSource</code> object to store and choose cards
@@ -62,7 +62,7 @@ public class CardSource {
      */
     protected void setCardType(Type type) {
 
-        this.type = type;
+        this.typeArray.add(type);
 
     } // end setCardType method
     
@@ -88,10 +88,12 @@ public class CardSource {
 
         int randomIndex = this.generator.nextInt(this.deck.size() - 1);
         Card card = this.deck.get(randomIndex);
-        while (!card.getType().equals(this.type)) {
-            randomIndex = this.generator.nextInt(this.deck.size() - 1);
-            card = this.deck.get(randomIndex);
-        }
+        for(Type type : typeArray) {
+            while (!card.getType().equals(type)) {
+                randomIndex = this.generator.nextInt(this.deck.size() - 1);
+                card = this.deck.get(randomIndex);
+            }
+        } // end for-each
 
         return card;
 

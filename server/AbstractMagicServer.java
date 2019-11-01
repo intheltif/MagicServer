@@ -230,6 +230,10 @@ public abstract class AbstractMagicServer implements MagicServer {
             case "-CS":
                 changeItemsToSend(TWO_TYPES);
                 break;
+            default:
+                System.out.println("Unrecognized flags present. Unable to change source.");
+                //TODO change to constant value.
+                System.exit(1);
         } // end switch statement
     } // end setCardsReturned method
 

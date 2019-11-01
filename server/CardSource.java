@@ -48,6 +48,7 @@ public class CardSource {
             this.deck = new ArrayList<>();
             buildDeck(cardFile);
             this.generator = new Random();
+            this.typeArray = new ArrayList<>();
         } catch(NullPointerException npe) {
             System.err.println("Pathname is null.");
             System.exit(1);

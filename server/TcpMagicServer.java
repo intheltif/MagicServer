@@ -1,6 +1,11 @@
 package server;
 
-import java.io.FileNotFoundException;
+import common.Card;
+
+import java.io.*;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 /**
  * This class represents a concrete implementation of a magic server that uses
@@ -23,7 +28,7 @@ public class TcpMagicServer extends AbstractMagicServer {
     public TcpMagicServer() throws FileNotFoundException {
 
         // TODO finish constructor.
-
+        super();
     } // end empty constructor.
 
     /**
@@ -38,6 +43,7 @@ public class TcpMagicServer extends AbstractMagicServer {
     public TcpMagicServer(int port) throws FileNotFoundException {
 
         // TODO finish constructor.
+        super(port);
 
     } // end empty constructor.
 
@@ -53,6 +59,7 @@ public class TcpMagicServer extends AbstractMagicServer {
     public TcpMagicServer(CardSource source) throws FileNotFoundException {
 
         // TODO finish constructor.
+        super(source);
 
     } // end empty constructor.
     
@@ -70,6 +77,7 @@ public class TcpMagicServer extends AbstractMagicServer {
         throws FileNotFoundException {
 
         // TODO finish constructor.
+        super(port, source);
 
     } // end empty constructor.
 
@@ -81,7 +89,48 @@ public class TcpMagicServer extends AbstractMagicServer {
      */
     public void listen() throws MagicServerException {
 
-        //TODO Finish listen() method
+        String flags = "";
+
+        try{
+            //Create the welcoming socket
+            ServerSocket serverSock = new ServerSocket(this.getPort());
+
+            while(!serverSock.isClosed()) {
+                // Create socket to accept client data
+                Socket sock = serverSock.accept();
+
+                // Create input streams
+                InputStreamReader incomingStringReader =
+                        new InputStreamReader(sock.getInputStream());
+                BufferedReader buffer =
+                        new BufferedReader(incomingStringReader);
+
+                // Get the flags the client sent
+                flags = buffer.readLine();
+                this.setCardsReturned(flags);
+
+                // Create output streams
+                OutputStream outStream = sock.getOutputStream();
+                ObjectOutputStream objOutStream =
+                        new ObjectOutputStream(outStream);
+
+                // Create and send back correct number of cards
+                for(int i=0; i < this.getItemsToSend(); i++) {
+                    Card card = this.getSource().next();
+                    objOutStream.writeObject(card);
+                }
+
+                // Close the socket that accepts client data
+                sock.close();
+            } // end while loop
+
+            // Close sockets
+            serverSock.close();
+
+        } catch(IOException ioe) {
+            throw new MagicServerException("I/O error, something went wrong.",
+                    ioe);
+        } // end try-catch
 
     } // end listen method
 

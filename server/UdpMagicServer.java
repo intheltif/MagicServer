@@ -1,6 +1,11 @@
 package server;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 
 /**
  * This class represents a concrete implementation of a magic server that uses
@@ -12,6 +17,8 @@ import java.io.FileNotFoundException;
 public class UdpMagicServer extends AbstractMagicServer {
 
     // TODO Add needed fields, if any
+    /** The maximum size of the byte array used to transport data */
+    private static final int MAX_SIZE = 256;
     
    
     /**
@@ -24,6 +31,7 @@ public class UdpMagicServer extends AbstractMagicServer {
     public UdpMagicServer() throws FileNotFoundException {
 
         // TODO finish constructor.
+        super();
 
     } // end empty constructor.
 
@@ -39,6 +47,7 @@ public class UdpMagicServer extends AbstractMagicServer {
     public UdpMagicServer(int port) throws FileNotFoundException {
 
         // TODO finish constructor.
+        super(port);
 
     } // end empty constructor.
 
@@ -54,6 +63,7 @@ public class UdpMagicServer extends AbstractMagicServer {
     public UdpMagicServer(CardSource source) throws FileNotFoundException {
 
         // TODO finish constructor.
+        super(source);
 
     } // end empty constructor.
     
@@ -71,6 +81,7 @@ public class UdpMagicServer extends AbstractMagicServer {
         throws FileNotFoundException {
 
         // TODO finish constructor.
+        super(port, source);
 
     } // end empty constructor.
 
@@ -83,7 +94,35 @@ public class UdpMagicServer extends AbstractMagicServer {
     public void listen() throws MagicServerException {
 
         //TODO Finish listen() method
+        try {
+            //Create socket, buffer, and packet for incoming data
+            DatagramSocket socket = new DatagramSocket(this.getPort());
+            byte[] incomingBuffer = new byte[MAX_SIZE];
+            DatagramPacket incomingPacket =
+                    new DatagramPacket(incomingBuffer, incomingBuffer.length);
 
-    } // end listen method
+            //Create the streams for data coming from the client
+            ByteArrayInputStream incomingStream =
+                    new ByteArrayInputStream(incomingBuffer);
+            ObjectInputStream incomingObjectStream =
+                    new ObjectInputStream(incomingStream);
+
+            //TODO Do the cards stuff here
+
+            // close streams
+            incomingObjectStream.close();
+            incomingStream.close();
+
+            // close socket
+            socket.close();
+        } catch(IOException ioe) {
+            throw new MagicServerException("IO Error", ioe);
+        } catch(ClassNotFoundException cnfe) {
+            throw new MagicServerException("The requested class could not be " +
+                    "found.", cnfe);
+        } // end try-catch
+
+
+} // end listen method
 
 } // end UdpMagicServer class

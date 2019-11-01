@@ -1,5 +1,7 @@
 package server;
 
+import common.Type;
+
 import java.io.FileNotFoundException;
 
 /**
@@ -21,13 +23,10 @@ public abstract class AbstractMagicServer implements MagicServer {
 
     /** The default port on which a magic server listens */
     private static final int DEFAULT_PORT = 5791;
-    
-    /** The default source from which to send cards to clients */
-    // TODO Figure out what to actually set this to?
-    private static final CardSource DEFAULT_SOURCE = null;
+
 
     /** The default number of items to send back */
-    private static final int NUM_ITEMS = ONE_TYPE;
+    private static final int NUM_ITEMS = THREE_TYPES;
 
     private int port;
 
@@ -44,7 +43,7 @@ public abstract class AbstractMagicServer implements MagicServer {
     public AbstractMagicServer() throws FileNotFoundException {
 
         this.port = DEFAULT_PORT;
-        this.source = DEFAULT_SOURCE;
+        this.source = new CardSource();
         this.numItemsToSend = NUM_ITEMS;
 
     } // end empty AbstractMagicServer constructor
@@ -61,7 +60,7 @@ public abstract class AbstractMagicServer implements MagicServer {
     public AbstractMagicServer(int port) throws FileNotFoundException {
 
         this.port = port;
-        this.source = DEFAULT_SOURCE;
+        this.source = new CardSource();
         this.numItemsToSend = NUM_ITEMS;
 
     } // end AbstractMagicServer constructor w/ port
@@ -199,29 +198,36 @@ public abstract class AbstractMagicServer implements MagicServer {
         // TODO Finish switch cases, use changeCardSource to choose which
         //      cards are to be sent back.
         switch (command) {
-            case "A":
+            case "-A":
                 changeItemsToSend(THREE_TYPES);
                 break;
-
-            case "C":
-            case "L":
-            case "S":
+            case "-C":
                 changeItemsToSend(ONE_TYPE);
+                this.source.setCardType(Type.CREATURE);
+                break;
+            case "-L":
+                changeItemsToSend(ONE_TYPE);
+                this.source.setCardType(Type.LAND);
+                break;
+            case "-S":
+                changeItemsToSend(ONE_TYPE);
+                this.source.setCardType(Type.SPELL);
                 break;
 
-            case "CL":
-            case "LC":
+            case "-CL":
+            case "-LC":
                 changeItemsToSend(TWO_TYPES);
-
+                this.source.setCardType(Type.CREATURE);
+                this.source.setCardType(Type.LAND);
                 break;
 
-            case"SL":
-            case "LS":
+            case "-SL":
+            case "-LS":
                 changeItemsToSend(TWO_TYPES);
                 break;
 
-            case "SC":
-            case "CS":
+            case "-SC":
+            case "-CS":
                 changeItemsToSend(TWO_TYPES);
                 break;
         } // end switch statement

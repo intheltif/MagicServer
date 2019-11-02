@@ -3,7 +3,6 @@ package server;
 import common.Card;
 
 import java.io.*;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -27,7 +26,6 @@ public class TcpMagicServer extends AbstractMagicServer {
      */
     public TcpMagicServer() throws FileNotFoundException {
 
-        // TODO finish constructor.
         super();
     } // end empty constructor.
 
@@ -42,7 +40,6 @@ public class TcpMagicServer extends AbstractMagicServer {
      */
     public TcpMagicServer(int port) throws FileNotFoundException {
 
-        // TODO finish constructor.
         super(port);
 
     } // end empty constructor.
@@ -76,7 +73,6 @@ public class TcpMagicServer extends AbstractMagicServer {
     public TcpMagicServer(int port, CardSource source) 
         throws FileNotFoundException {
 
-        // TODO finish constructor.
         super(port, source);
 
     } // end empty constructor.
@@ -89,7 +85,7 @@ public class TcpMagicServer extends AbstractMagicServer {
      */
     public void listen() throws MagicServerException {
 
-        String flags = "";
+        String flags;
 
         try{
             //Create the welcoming socket

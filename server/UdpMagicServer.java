@@ -15,7 +15,6 @@ import java.net.DatagramSocket;
  */
 public class UdpMagicServer extends AbstractMagicServer {
 
-    // TODO Add needed fields, if any
     /** The maximum size of the byte array used to transport data */
     private static final int MAX_SIZE = 256;
     

@@ -22,8 +22,6 @@ import java.util.regex.Pattern;
  */
 public class CardSource {
 
-    // TODO Add fields as necessary.
-
     /** The deck of Magic the Gathering cards */
     private ArrayList<Card> deck;
 
@@ -44,6 +42,7 @@ public class CardSource {
      */
     public CardSource() throws FileNotFoundException {
         try {
+            //TODO Fix this file to work correctly
             File cardFile = new File("/home/evert/Documents/classes/cs465/projects/project2/server/cards.csv");
             this.deck = new ArrayList<>();
             buildDeck(cardFile);
@@ -89,11 +88,9 @@ public class CardSource {
 
         int randomIndex = this.generator.nextInt(this.deck.size() - 1);
         Card card = this.deck.get(randomIndex);
-        for(Type type : typeArray) {
-            while (!card.getType().equals(type)) {
-                randomIndex = this.generator.nextInt(this.deck.size() - 1);
-                card = this.deck.get(randomIndex);
-            }
+        while (!this.typeArray.contains(card.getType())) {
+            randomIndex = this.generator.nextInt(this.deck.size() - 1);
+            card = this.deck.get(randomIndex);
         } // end for-each
 
         return card;

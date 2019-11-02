@@ -74,6 +74,7 @@ public class MagicServerDriver {
                 }
             }
         }
+        System.exit(SUCCESS);
 
     } // end main method
 

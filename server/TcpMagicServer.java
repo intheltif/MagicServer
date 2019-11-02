@@ -15,8 +15,6 @@ import java.net.Socket;
  */
 public class TcpMagicServer extends AbstractMagicServer {
 
-    // TODO Add needed fields, if any
-   
     /**
      * Creates a new <code>TcpMagicServer</code> that listens for connections 
      * on the default magic TCP port, and uses the default card source.
@@ -55,7 +53,6 @@ public class TcpMagicServer extends AbstractMagicServer {
      */
     public TcpMagicServer(CardSource source) throws FileNotFoundException {
 
-        // TODO finish constructor.
         super(source);
 
     } // end empty constructor.

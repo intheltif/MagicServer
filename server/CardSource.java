@@ -178,6 +178,8 @@ public class CardSource {
      */
     public static void main(String[] args) {
 
+        //TODO Remove the data input test code below
+
         try {
             CardSource cs = new CardSource();
             cs.setCardType(Type.CREATURE);

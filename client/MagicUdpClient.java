@@ -4,7 +4,7 @@ package client;
  * This class represents a concrete implementation of a magic client that uses
  * the UDP network layer protocol.
  *
- * @author Evert Ball
+ * @author Evert Ball, Garrett Starkey
  * @version 01 November 2019
  */
 public class MagicUdpClient extends AbstractMagicClient {
@@ -19,7 +19,7 @@ public class MagicUdpClient extends AbstractMagicClient {
      */
     public MagicUdpClient(InetAddress host) {
 
-        // TODO finish constructor w/ 1 arg
+        super(host);
 
     } // end constructor w/ host
 
@@ -32,7 +32,7 @@ public class MagicUdpClient extends AbstractMagicClient {
      */
     public MagicUdpClient(InetAddress host, int port) {
 
-        // TODO finish constructor w/ 2 args
+        super(host, port);
 
     } // end constructor w/ host & port
     
@@ -46,7 +46,7 @@ public class MagicUdpClient extends AbstractMagicClient {
      */
     public MagicUdpClient(InetAddress host, int port, String flag) {
 
-        // TODO finish constructor w/ 3 args
+        super(host, port, flag);
 
     } // end constructor w/ host, port, & flag
 

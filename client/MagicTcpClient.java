@@ -4,12 +4,16 @@ package client;
  * This class represents a concrete implementation of a magic client that uses
  * the TCP network layer protocol.
  *
- * @author Evert Ball
+ * @author Evert Ball, Garrett Starkey
  * @version 01 November 2019
  */
 public class MagicTcpClient extends AbstractMagicClient {
 
     //TODO Add needed fields, if any (I think I need host, port, and flags...)
+    //Initializing variables
+    InetAddress host;
+    int port;
+
 
     /**
      * Initializes a new <code>MagicTcpClient</code> with the specified host, 
@@ -19,7 +23,7 @@ public class MagicTcpClient extends AbstractMagicClient {
      */
     public MagicTcpClient(InetAddress host) {
 
-        // TODO finish constructor w/ 1 arg
+        super(host);
 
     } // end constructor w/ host
 
@@ -32,7 +36,7 @@ public class MagicTcpClient extends AbstractMagicClient {
      */
     public MagicTcpClient(InetAddress host, int port) {
 
-        // TODO finish constructor w/ 2 args
+        super(host, port);
 
     } // end constructor w/ host & port
     
@@ -46,7 +50,7 @@ public class MagicTcpClient extends AbstractMagicClient {
      */
     public MagicTcpClient(InetAddress host, int port, String flag) {
 
-        // TODO finish constructor w/ 3 args
+       super(host, port, flag);
 
     } // end constructor w/ host, port, & flag
 

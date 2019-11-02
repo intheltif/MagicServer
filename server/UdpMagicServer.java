@@ -1,9 +1,8 @@
 package server;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import common.Card;
+
+import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
@@ -30,7 +29,6 @@ public class UdpMagicServer extends AbstractMagicServer {
      */
     public UdpMagicServer() throws FileNotFoundException {
 
-        // TODO finish constructor.
         super();
 
     } // end empty constructor.
@@ -46,7 +44,6 @@ public class UdpMagicServer extends AbstractMagicServer {
      */
     public UdpMagicServer(int port) throws FileNotFoundException {
 
-        // TODO finish constructor.
         super(port);
 
     } // end empty constructor.
@@ -62,7 +59,6 @@ public class UdpMagicServer extends AbstractMagicServer {
      */
     public UdpMagicServer(CardSource source) throws FileNotFoundException {
 
-        // TODO finish constructor.
         super(source);
 
     } // end empty constructor.
@@ -80,7 +76,6 @@ public class UdpMagicServer extends AbstractMagicServer {
     public UdpMagicServer(int port, CardSource source) 
         throws FileNotFoundException {
 
-        // TODO finish constructor.
         super(port, source);
 
     } // end empty constructor.
@@ -93,7 +88,6 @@ public class UdpMagicServer extends AbstractMagicServer {
      */
     public void listen() throws MagicServerException {
 
-        //TODO Finish listen() method
         try {
             //Create socket, buffer, and packet for incoming data
             DatagramSocket socket = new DatagramSocket(this.getPort());
@@ -101,25 +95,32 @@ public class UdpMagicServer extends AbstractMagicServer {
             DatagramPacket incomingPacket =
                     new DatagramPacket(incomingBuffer, incomingBuffer.length);
 
-            //Create the streams for data coming from the client
-            ByteArrayInputStream incomingStream =
-                    new ByteArrayInputStream(incomingBuffer);
-            ObjectInputStream incomingObjectStream =
-                    new ObjectInputStream(incomingStream);
+            // Receive the incoming packet and create the String
+            socket.receive(incomingPacket);
+            String flags = new String(incomingPacket.getData(),
+                    incomingPacket.getOffset(), incomingPacket.getLength());
 
-            //TODO Do the cards stuff here
+            // Set cards to send to what the client requested
+            this.setCardsReturned(flags);
 
-            // close streams
-            incomingObjectStream.close();
-            incomingStream.close();
+            //Create the streams for data going to the client
+            ByteArrayOutputStream outgoingStream =
+                    new ByteArrayOutputStream(MAX_SIZE);
+            ObjectOutputStream outgoingObjectStream =
+                    new ObjectOutputStream(outgoingStream);
+
+            for(int i=0; i < this.getItemsToSend(); i++) {
+                Card card = this.getSource().next();
+                outgoingObjectStream.writeObject(card);
+                byte[] outBuffer = outgoingStream.toByteArray();
+                DatagramPacket outPack = new DatagramPacket(outBuffer, outBuffer.length);
+                socket.send(outPack);
+            }
 
             // close socket
             socket.close();
         } catch(IOException ioe) {
             throw new MagicServerException("IO Error", ioe);
-        } catch(ClassNotFoundException cnfe) {
-            throw new MagicServerException("The requested class could not be " +
-                    "found.", cnfe);
         } // end try-catch
 
 

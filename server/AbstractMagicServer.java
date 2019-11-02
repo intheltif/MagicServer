@@ -11,28 +11,30 @@ import java.io.FileNotFoundException;
 public abstract class AbstractMagicServer implements MagicServer {
 
     /** The number of cards to be sent for 3 types of cards */
-    protected static final int THREE_TYPES = 60;
+    private static final int THREE_TYPES = 60;
 
     /** The number of cards to be sent for 2 types of cards */
-    protected static final int TWO_TYPES = 40;
+    private static final int TWO_TYPES = 40;
 
     /** The number of cards to be sent for 1 type of card */
-    protected static final int ONE_TYPE = 20;
+    private static final int ONE_TYPE = 20;
 
     /** The default port on which a magic server listens */
     private static final int DEFAULT_PORT = 5791;
 
     /** Represents a FAILED exit status */
-
     private static final int FAILURE = 1;
 
     /** The default number of items to send back */
     private static final int NUM_ITEMS = THREE_TYPES;
 
+    /** The port for the MagicServer to do work over the network */
     private int port;
 
+    /** The <code>CardSource</code> to use to send cards across the network */
     private CardSource source;
 
+    /** The number of Cards to send back to the client, based on client flags */
     private int numItemsToSend;
     
     /**
@@ -160,6 +162,7 @@ public abstract class AbstractMagicServer implements MagicServer {
      */
     protected void changeItemsToSend(int numItems) {
 
+        // Make sure that the number to change to is within acceptable range
         if(numItems < ONE_TYPE) {
             System.err.println("Unable to send less than 20 cards");
             System.exit(FAILURE);

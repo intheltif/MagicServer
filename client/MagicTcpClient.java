@@ -1,4 +1,7 @@
 package client;
+import java.io.IOException;
+import java.net.*;
+import java.io.PrintStream;
 
 /**
  * This class represents a concrete implementation of a magic client that uses
@@ -9,11 +12,24 @@ package client;
  */
 public class MagicTcpClient extends AbstractMagicClient {
 
-    //TODO Add needed fields, if any (I think I need host, port, and flags...)
     //Initializing variables
     InetAddress host;
-    int port;
 
+    int port = DEFAULT_PORT;
+
+    String flag = DEFAULT_FLAG;
+
+    /** The first command line argument */
+    private static final int FIRST_ARG = 0;
+
+    /** The second command line argument */
+    private static final int SECOND_ARG = 1;
+
+    /** A constant to represent a failed exit */
+    private static final int FAILURE = 1;
+
+    /** A constant string to print out when we encounter an IOException. */
+    private static final String IO_ERROR = "I/O error...Something went wrong.";
 
     /**
      * Initializes a new <code>MagicTcpClient</code> with the specified host, 
@@ -64,10 +80,25 @@ public class MagicTcpClient extends AbstractMagicClient {
      *
      * @throws IOException If there is an I/O error while receiving the data.
      */
-    @Override //TODO Is this needed?
+
     public void printToStream(PrintStream out) throws IOException {
-        
-        //TODO finish printToStream method
+        try {
+            host = InetAddress.getByName(args[FIRST_ARG]);
+            port = Integer.parseInt(args[SECOND_ARG]);
+
+            //Creates the client socket
+            Socket client = new Socket(host, port);
+
+            //Creates the streams for the client to be able to communicate
+            //with the server.
+
+
+
+
+        } catch(IOException ioe) {
+            System.out.println(IO_ERROR);
+            System.exit(FAILURE);
+        }
 
     } // end printToStream method
 

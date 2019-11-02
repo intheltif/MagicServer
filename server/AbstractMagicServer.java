@@ -10,8 +10,6 @@ import java.io.FileNotFoundException;
  */
 public abstract class AbstractMagicServer implements MagicServer {
 
-    // TODO Document first three constant fields
-
     /** The number of cards to be sent for 3 types of cards */
     protected static final int THREE_TYPES = 60;
 
@@ -24,6 +22,9 @@ public abstract class AbstractMagicServer implements MagicServer {
     /** The default port on which a magic server listens */
     private static final int DEFAULT_PORT = 5791;
 
+    /** Represents a FAILED exit status */
+
+    private static final int FAILURE = 1;
 
     /** The default number of items to send back */
     private static final int NUM_ITEMS = THREE_TYPES;
@@ -159,15 +160,12 @@ public abstract class AbstractMagicServer implements MagicServer {
      */
     protected void changeItemsToSend(int numItems) {
 
-        //TODO Make sure this is the correct check we should do here
         if(numItems < ONE_TYPE) {
             System.err.println("Unable to send less than 20 cards");
-            //TODO change to a constant value
-            System.exit(1);
+            System.exit(FAILURE);
         } else if(numItems > THREE_TYPES){
             System.err.println("Unable to send more than 60 cards");
-            //TODO change to a constant value
-            System.exit(1);
+            System.exit(FAILURE);
         } else {
             this.numItemsToSend = numItems;
         }
@@ -195,8 +193,6 @@ public abstract class AbstractMagicServer implements MagicServer {
      */
     protected void setCardsReturned(String command) {
 
-        // TODO Finish switch cases, use changeCardSource to choose which
-        //      cards are to be sent back.
         switch (command) {
             case "-A":
                 changeItemsToSend(THREE_TYPES);
@@ -239,8 +235,7 @@ public abstract class AbstractMagicServer implements MagicServer {
                 break;
             default:
                 System.out.println("Unrecognized flags present. Unable to change source.");
-                //TODO change to constant value.
-                System.exit(1);
+                System.exit(FAILURE);
         } // end switch statement
     } // end setCardsReturned method
 

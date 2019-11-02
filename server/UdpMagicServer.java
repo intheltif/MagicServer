@@ -90,39 +90,38 @@ public class UdpMagicServer extends AbstractMagicServer {
         try {
             //Create socket, buffer, and packet for incoming data
             DatagramSocket socket = new DatagramSocket(this.getPort());
-            byte[] incomingBuffer = new byte[MAX_SIZE];
-            DatagramPacket incomingPacket =
-                    new DatagramPacket(incomingBuffer, incomingBuffer.length);
+            while(!socket.isClosed()) {
+                byte[] incomingBuffer = new byte[MAX_SIZE];
+                DatagramPacket incomingPacket =
+                        new DatagramPacket(incomingBuffer, incomingBuffer.length);
 
-            // Receive the incoming packet and create the String
-            socket.receive(incomingPacket);
-            String flags = new String(incomingPacket.getData(),
-                    incomingPacket.getOffset(), incomingPacket.getLength());
+                // Receive the incoming packet and create the String
+                socket.receive(incomingPacket);
+                String flags = new String(incomingPacket.getData(),
+                        incomingPacket.getOffset(), incomingPacket.getLength());
 
-            // Set cards to send to what the client requested
-            this.setCardsReturned(flags);
+                // Set cards to send to what the client requested
+                this.setCardsReturned(flags);
 
-            //Create the streams for data going to the client
-            ByteArrayOutputStream outgoingStream =
-                    new ByteArrayOutputStream(MAX_SIZE);
-            ObjectOutputStream outgoingObjectStream =
-                    new ObjectOutputStream(outgoingStream);
+                //Create the streams for data going to the client
+                ByteArrayOutputStream outgoingStream =
+                        new ByteArrayOutputStream(MAX_SIZE);
+                ObjectOutputStream outgoingObjectStream =
+                        new ObjectOutputStream(outgoingStream);
 
-            for(int i=0; i < this.getItemsToSend(); i++) {
-                Card card = this.getSource().next();
-                outgoingObjectStream.writeObject(card);
-                byte[] outBuffer = outgoingStream.toByteArray();
-                DatagramPacket outPack = new DatagramPacket(outBuffer, outBuffer.length);
-                socket.send(outPack);
-            }
-
+                for (int i = 0; i < this.getItemsToSend(); i++) {
+                    Card card = this.getSource().next();
+                    outgoingObjectStream.writeObject(card);
+                    byte[] outBuffer = outgoingStream.toByteArray();
+                    DatagramPacket outPack = new DatagramPacket(outBuffer, outBuffer.length);
+                    socket.send(outPack);
+                } // end for loop
+            } // end while loop
             // close socket
             socket.close();
         } catch(IOException ioe) {
             throw new MagicServerException("IO Error", ioe);
         } // end try-catch
-
-
-} // end listen method
+    } // end listen method
 
 } // end UdpMagicServer class

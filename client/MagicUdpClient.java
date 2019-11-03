@@ -1,4 +1,9 @@
 package client;
+import org.omg.CORBA.portable.OutputStream;
+
+import java.io.IOException;
+import java.net.*;
+import java.io.PrintStream;
 
 /**
  * This class represents a concrete implementation of a magic client that uses
@@ -9,7 +14,11 @@ package client;
  */
 public class MagicUdpClient extends AbstractMagicClient {
 
-    // TODO Add fields needed, if any.
+    /** A constant to represent a failed exit */
+    private static final int FAILURE = 1;
+
+    /** A constant string to print out when we encounter an IOException. */
+    private static final String IO_ERROR = "I/O error...Something went wrong.";
     
     /**
      * Initializes a new <code>MagicUdpClient</code> with the specified host, 
@@ -60,10 +69,31 @@ public class MagicUdpClient extends AbstractMagicClient {
      *
      * @throws IOException If there is an I/O error while receiving the data.
      */
-    @Override //TODO Is this needed?
     public void printToStream(PrintStream out) throws IOException {
-        
-        //TODO finish printToStream method
+        try {
+            // These don't seem right to me
+            String host = getHost(args[0]);
+            int port = getPort(Integer.parseInt(args[1]));
+
+            // Creating a buffer
+            byte[] buffer = new byte[0];
+            DatagramPacket send = new DatagramPacket(buffer, buffer.length, InetAddress.getByName(host), port);
+            DatagramSocket receive = new DatagramSocket();
+            receive.send(send);
+
+            // Create streams to collect what is coming from the server
+            byte[] retrieve = new byte[256];
+            DatagramPacket incomingInfo = new DatagramPacket(retrieve, retrieve.length);
+            receive.receive(incomingInfo);
+
+            // Prints to specified output stream
+            // TODO figure out how to print to a specific output stream
+            out.write();
+
+        } catch(IOException ioe) {
+            System.out.println(IO_ERROR);
+            System.out.println(FAILURE);
+        }
 
     } // end printToStream method
 

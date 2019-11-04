@@ -1,15 +1,24 @@
 package client;
+import org.omg.CORBA.portable.OutputStream;
+
+import java.io.IOException;
+import java.net.*;
+import java.io.PrintStream;
 
 /**
  * This class represents a concrete implementation of a magic client that uses
  * the UDP network layer protocol.
  *
- * @author Evert Ball
+ * @author Evert Ball, Garrett Starkey
  * @version 01 November 2019
  */
 public class MagicUdpClient extends AbstractMagicClient {
 
-    // TODO Add fields needed, if any.
+    /** A constant to represent a failed exit */
+    private static final int FAILURE = 1;
+
+    /** A constant string to print out when we encounter an IOException. */
+    private static final String IO_ERROR = "I/O error...Something went wrong.";
     
     /**
      * Initializes a new <code>MagicUdpClient</code> with the specified host, 
@@ -19,7 +28,7 @@ public class MagicUdpClient extends AbstractMagicClient {
      */
     public MagicUdpClient(InetAddress host) {
 
-        // TODO finish constructor w/ 1 arg
+        super(host);
 
     } // end constructor w/ host
 
@@ -32,7 +41,7 @@ public class MagicUdpClient extends AbstractMagicClient {
      */
     public MagicUdpClient(InetAddress host, int port) {
 
-        // TODO finish constructor w/ 2 args
+        super(host, port);
 
     } // end constructor w/ host & port
     
@@ -46,7 +55,7 @@ public class MagicUdpClient extends AbstractMagicClient {
      */
     public MagicUdpClient(InetAddress host, int port, String flag) {
 
-        // TODO finish constructor w/ 3 args
+        super(host, port, flag);
 
     } // end constructor w/ host, port, & flag
 
@@ -60,10 +69,31 @@ public class MagicUdpClient extends AbstractMagicClient {
      *
      * @throws IOException If there is an I/O error while receiving the data.
      */
-    @Override //TODO Is this needed?
     public void printToStream(PrintStream out) throws IOException {
-        
-        //TODO finish printToStream method
+        try {
+            // These don't seem right to me
+            String host = getHost(args[0]);
+            int port = getPort(Integer.parseInt(args[1]));
+
+            // Creating a buffer
+            byte[] buffer = new byte[0];
+            DatagramPacket send = new DatagramPacket(buffer, buffer.length, InetAddress.getByName(host), port);
+            DatagramSocket receive = new DatagramSocket();
+            receive.send(send);
+
+            // Create streams to collect what is coming from the server
+            byte[] retrieve = new byte[256];
+            DatagramPacket incomingInfo = new DatagramPacket(retrieve, retrieve.length);
+            receive.receive(incomingInfo);
+
+            // Prints to specified output stream
+            // TODO figure out how to print to a specific output stream
+            out.write();
+
+        } catch(IOException ioe) {
+            System.out.println(IO_ERROR);
+            System.out.println(FAILURE);
+        }
 
     } // end printToStream method
 

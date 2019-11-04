@@ -112,6 +112,7 @@ public class TcpMagicServer extends AbstractMagicServer {
                     Card card = this.getSource().next();
                     objOutStream.writeObject(card);
                 }
+                objOutStream.writeObject(null);
 
                 // Close the socket that accepts client data
                 sock.close();

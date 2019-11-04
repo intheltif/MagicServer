@@ -1,5 +1,9 @@
 package client;
 
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.InetAddress;
+
 /**
  * An abstract class that contains fields and methods that may be common to
  * implementations of the 'magic' protocol.
@@ -115,7 +119,7 @@ public abstract class AbstractMagicClient implements MagicClient {
      *
      * @throws IOException if there is an I/O error while receiving the data.
      */
-    public abstract void printToStream(PrintStream out);
+    public abstract void printToStream(PrintStream out) throws IOException;
 
 
 

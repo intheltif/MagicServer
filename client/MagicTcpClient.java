@@ -1,7 +1,9 @@
 package client;
-import java.io.IOException;
+import common.Card;
+
+import java.io.*;
+import java.net.Socket;
 import java.net.*;
-import java.io.PrintStream;
 
 /**
  * This class represents a concrete implementation of a magic client that uses
@@ -13,18 +15,6 @@ import java.io.PrintStream;
 public class MagicTcpClient extends AbstractMagicClient {
 
     //Initializing variables
-    InetAddress host;
-
-    int port = DEFAULT_PORT;
-
-    String flag = DEFAULT_FLAG;
-
-    /** The first command line argument */
-    private static final int FIRST_ARG = 0;
-
-    /** The second command line argument */
-    private static final int SECOND_ARG = 1;
-
     /** A constant to represent a failed exit */
     private static final int FAILURE = 1;
 
@@ -59,7 +49,6 @@ public class MagicTcpClient extends AbstractMagicClient {
     /**
      * Initializes a new <code>MagicTcpClient</code> with the specified host, 
      * port, and flag.
-     *
      * @param host The address of the remote host to which to connect.
      * @param port The port on the remote host to which to connect.
      * @param flag The arguments to send to the server.
@@ -80,23 +69,26 @@ public class MagicTcpClient extends AbstractMagicClient {
      *
      * @throws IOException If there is an I/O error while receiving the data.
      */
-
     public void printToStream(PrintStream out) throws IOException {
         try {
-            host = InetAddress.getByName(args[FIRST_ARG]);
-            port = Integer.parseInt(args[SECOND_ARG]);
-
             //Creates the client socket
-            Socket client = new Socket(host, port);
+            Socket client = new Socket(this.getHost(), this.getPort());
 
-            //Creates the streams for the client to be able to communicate
-            //with the server.
+            InputStream incoming = client.getInputStream();
+            ObjectInputStream  incomingCard = new ObjectInputStream(incoming);
 
+            Card card = (Card)incomingCard.readObject();
 
-
+            while(card != null) {
+                out.print(card);
+                card = (Card)incomingCard.readObject();
+            }
 
         } catch(IOException ioe) {
             System.out.println(IO_ERROR);
+            System.exit(FAILURE);
+        } catch(ClassNotFoundException cnfe) {
+            System.err.println("Class could not be found." );
             System.exit(FAILURE);
         }
 

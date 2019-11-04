@@ -1,5 +1,8 @@
 package client;
 
+import java.io.IOException;
+import java.io.PrintStream;
+
 /**
  * The interface to a magic client component.
  *

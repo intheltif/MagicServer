@@ -14,7 +14,7 @@ import java.net.InetAddress;
 public abstract class AbstractMagicClient implements MagicClient {
 
     /** The default port on which a magic server listens. */
-    public static final int DEFAULT_PORT = 5555;
+    public static final int DEFAULT_PORT = 5791;
 
     /** The default flag to specify which cards to send. All is the default. */
     public static final String DEFAULT_FLAG = "-A";
@@ -56,6 +56,21 @@ public abstract class AbstractMagicClient implements MagicClient {
         this.host = host;
         this.port = port;
         this.flag = DEFAULT_FLAG;
+
+    } // end constructor from host and port
+
+    /**
+     * Initializes a new <code>AbstractMagicClient</code> with the specified
+     * host and flag using the default port.
+     *
+     * @param host The address of the remote host to connect to.
+     * @param flag The flags which determine which cards to send back.
+     */
+    public AbstractMagicClient(InetAddress host, String flag) {
+
+        this.host = host;
+        this.port = DEFAULT_PORT;
+        this.flag = flag;
 
     } // end constructor from host and port
 

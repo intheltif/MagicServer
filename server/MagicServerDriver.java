@@ -48,29 +48,41 @@ public class MagicServerDriver {
                 try {
                     int port = Integer.parseInt(args[1]);
                     AbstractMagicServer tcp = new TcpMagicServer(port);
+                    tcp.listen();
                 } catch(FileNotFoundException fnfe) {
                     System.err.println(FILE_NOT_FOUND_ERR);
+                } catch (MagicServerException mse) {
+                    System.err.println("Magic Server Exception: " + mse.getMessage());
                 }
             } else {
                 try {
                     AbstractMagicServer tcp = new TcpMagicServer();
+                    tcp.listen();
                 } catch(FileNotFoundException fnfe) {
                     System.err.println(FILE_NOT_FOUND_ERR);
+                } catch (MagicServerException mse) {
+                    System.err.println("Magic Server Exception: " + mse.getMessage());
                 }
-            }
+        }
         } else if(transportProtocol.toLowerCase().equals("udp")) {
             if(args.length == 2) {
                 try {
                     int port = Integer.parseInt(args[1]);
                     AbstractMagicServer udp = new UdpMagicServer(port);
+                    udp.listen();
                 } catch(FileNotFoundException fnfe) {
                     System.err.println(FILE_NOT_FOUND_ERR);
+                } catch (MagicServerException mse) {
+                    System.err.println("Magic Server Exception: " + mse.getMessage());
                 }
-            } else {
+        } else {
                 try {
                     AbstractMagicServer udp = new UdpMagicServer();
+                    udp.listen();
                 } catch(FileNotFoundException fnfe) {
                     System.err.println(FILE_NOT_FOUND_ERR);
+                } catch (MagicServerException mse) {
+                    System.err.println("Magic Server Exception: " + mse.getMessage());
                 }
             }
         }

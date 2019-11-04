@@ -91,6 +91,7 @@ public class TcpMagicServer extends AbstractMagicServer {
             while(!serverSock.isClosed()) {
                 // Create socket to accept client data
                 Socket sock = serverSock.accept();
+                System.out.println("Accepted something");
 
                 // Create input streams
                 InputStreamReader incomingStringReader =
@@ -100,6 +101,7 @@ public class TcpMagicServer extends AbstractMagicServer {
 
                 // Get the flags the client sent
                 flags = buffer.readLine();
+                System.out.println("Got flags.");
                 this.setCardsReturned(flags);
 
                 // Create output streams
@@ -108,11 +110,19 @@ public class TcpMagicServer extends AbstractMagicServer {
                         new ObjectOutputStream(outStream);
 
                 // Create and send back correct number of cards
+                System.out.println("Started sending cards");
                 for(int i=0; i < this.getItemsToSend(); i++) {
                     Card card = this.getSource().next();
                     objOutStream.writeObject(card);
                 }
+                System.out.println("Finished sending");
                 objOutStream.writeObject(null);
+
+
+                buffer.close();
+                incomingStringReader.close();
+                objOutStream.close();
+                outStream.close();
 
                 // Close the socket that accepts client data
                 sock.close();

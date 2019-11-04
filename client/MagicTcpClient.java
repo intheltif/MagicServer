@@ -45,7 +45,20 @@ public class MagicTcpClient extends AbstractMagicClient {
         super(host, port);
 
     } // end constructor w/ host & port
-    
+
+    /**
+     * Initializes a new <code>MagicTcpClient</code> with the specified host
+     * and flag.
+     *
+     * @param host The address of the remote host to which to connect.
+     * @param flag The arguments to send to the server.
+     */
+    public MagicTcpClient(InetAddress host, String flag) {
+
+        super(host, flag);
+
+    } // end constructor w/ host & port
+
     /**
      * Initializes a new <code>MagicTcpClient</code> with the specified host, 
      * port, and flag.
@@ -73,6 +86,10 @@ public class MagicTcpClient extends AbstractMagicClient {
         try {
             //Creates the client socket
             Socket client = new Socket(this.getHost(), this.getPort());
+            System.out.println("Made a socket");
+
+            PrintWriter clientPW = new PrintWriter(client.getOutputStream(), true);
+            clientPW.println(this.getFlag());
 
             InputStream incoming = client.getInputStream();
             ObjectInputStream  incomingCard = new ObjectInputStream(incoming);
@@ -80,9 +97,12 @@ public class MagicTcpClient extends AbstractMagicClient {
             Card card = (Card)incomingCard.readObject();
 
             while(card != null) {
-                out.print(card);
+                out.print(card.toString() + "\n");
                 card = (Card)incomingCard.readObject();
             }
+
+            clientPW.close();
+            client.close();
 
         } catch(IOException ioe) {
             System.out.println(IO_ERROR);

@@ -1,4 +1,5 @@
 package client;
+import common.Card;
 import org.omg.CORBA.portable.OutputStream;
 
 import java.io.IOException;
@@ -71,13 +72,9 @@ public class MagicUdpClient extends AbstractMagicClient {
      */
     public void printToStream(PrintStream out) throws IOException {
         try {
-            // These don't seem right to me
-            String host = getHost(args[0]);
-            int port = getPort(Integer.parseInt(args[1]));
-
             // Creating a buffer
             byte[] buffer = new byte[0];
-            DatagramPacket send = new DatagramPacket(buffer, buffer.length, InetAddress.getByName(host), port);
+            DatagramPacket send = new DatagramPacket(buffer, buffer.length, this.getHost(), this.getPort());
             DatagramSocket receive = new DatagramSocket();
             receive.send(send);
 
@@ -86,9 +83,10 @@ public class MagicUdpClient extends AbstractMagicClient {
             DatagramPacket incomingInfo = new DatagramPacket(retrieve, retrieve.length);
             receive.receive(incomingInfo);
 
+            Card card = null;
+
             // Prints to specified output stream
-            // TODO figure out how to print to a specific output stream
-            out.write();
+            //out.write(card);
 
         } catch(IOException ioe) {
             System.out.println(IO_ERROR);

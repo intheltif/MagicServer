@@ -96,7 +96,7 @@ public class MagicUdpClient extends AbstractMagicClient {
             DatagramPacket incomingInfo = new DatagramPacket(retrieve, retrieve.length);
             socket.receive(incomingInfo);
 
-            while(incomingInfo.getLength() != 0) {
+            while(incomingInfo.getData().length != 0) {
                 ByteArrayInputStream incomingStream = new ByteArrayInputStream(retrieve);
                 ObjectInputStream objStream = new ObjectInputStream(incomingStream);
                 Card card = (Card) objStream.readObject();

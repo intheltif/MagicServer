@@ -87,8 +87,54 @@ public class MagicClientDriver {
                 } // end try-catch
             } // end if statement
         } else if(args[0].toLowerCase().equals("udp")) {
-            System.out.println("Still under construction, please be patient");
-            System.exit(2);
+            if(args.length == 2) {
+                try {
+                    AbstractMagicClient udp = new MagicUdpClient(InetAddress.getByName(args[1]));
+                    udp.printToStream(System.out);
+                } catch (UnknownHostException uhe) {
+                    System.err.println("Unknown host, cannot connect.");
+                    System.exit(FAILURE);
+                } catch (IOException ioe) {
+                    System.err.println("Encountered IO error. Cannot continue. ");
+                    System.exit(FAILURE);
+                }
+            } else if(args.length == 3) {
+                try {
+                    AbstractMagicClient udp = new MagicUdpClient(InetAddress.getByName(args[1]), Integer.parseInt(args[2]));
+                    udp.printToStream(System.out);
+                } catch(NumberFormatException nfe) {
+                    try {
+                        AbstractMagicClient udp = new MagicUdpClient(InetAddress.getByName(args[1]), args[2]);
+                        udp.printToStream(System.out);
+                    } catch(UnknownHostException uhe) {
+                        System.err.println("Unknown host, cannot connect.");
+                        System.exit(FAILURE);
+                    } catch(IOException ioe) {
+                        System.err.println("Encountered IO error. Cannot continue. ");
+                        System.exit(FAILURE);
+                    } // end try-catch
+                } catch (UnknownHostException uhe) {
+                    System.err.println("Unknown host, cannot connect.");
+                    System.exit(FAILURE);
+                } catch (IOException ioe) {
+                    System.err.println("Encountered IO error. Cannot continue. ");
+                    System.exit(FAILURE);
+                } // end try-catch
+            } else if(args.length == 4) {
+                try {
+                    AbstractMagicClient udp = new MagicUdpClient(InetAddress.getByName(args[1]), Integer.parseInt(args[2]), args[3]);
+                    udp.printToStream(System.out);
+                } catch(NumberFormatException nfe) {
+                    System.err.println("Third argument must be a port number. Exiting...");
+                    System.exit(FAILURE);
+                } catch(UnknownHostException uhe) {
+                    System.err.println("Unknown host, cannot connect.");
+                    System.exit(FAILURE);
+                } catch(IOException ioe) {
+                    System.err.println("Encountered IO error. Cannot continue. ");
+                    System.exit(FAILURE);
+                } // end try-catch
+            } // end if statement
         }
 
         System.exit(SUCCESS);

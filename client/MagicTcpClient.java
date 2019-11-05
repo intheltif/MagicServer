@@ -105,6 +105,7 @@ public class MagicTcpClient extends AbstractMagicClient {
             client.close();
 
         } catch(IOException ioe) {
+            System.out.println("Me?");
             System.out.println(IO_ERROR);
             System.exit(FAILURE);
         } catch(ClassNotFoundException cnfe) {

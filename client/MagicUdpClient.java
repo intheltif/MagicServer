@@ -2,9 +2,8 @@ package client;
 import common.Card;
 import org.omg.CORBA.portable.OutputStream;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.*;
-import java.io.PrintStream;
 
 /**
  * This class represents a concrete implementation of a magic client that uses
@@ -45,7 +44,20 @@ public class MagicUdpClient extends AbstractMagicClient {
         super(host, port);
 
     } // end constructor w/ host & port
-    
+
+    /**
+     * Initializes a new <code>MagicUdpClient</code> with the specified host
+     * and port.
+     *
+     * @param host The address of the remote host to which to connect.
+     * @param flag The arguments to send to the server.
+     */
+    public MagicUdpClient(InetAddress host, String flag) {
+
+        super(host, flag);
+
+    } // end constructor w/ host & port
+
     /**
      * Initializes a new <code>MagicUdpClient</code> with the specified host, 
      * port, and flag.
@@ -73,25 +85,39 @@ public class MagicUdpClient extends AbstractMagicClient {
     public void printToStream(PrintStream out) throws IOException {
         try {
             // Creating a buffer
-            byte[] buffer = new byte[0];
-            DatagramPacket send = new DatagramPacket(buffer, buffer.length, this.getHost(), this.getPort());
-            DatagramSocket receive = new DatagramSocket();
-            receive.send(send);
+            byte[] outgoing = new byte[256];
+            outgoing = this.getFlag().getBytes();
+            DatagramSocket socket = new DatagramSocket();
+            DatagramPacket packet = new DatagramPacket(outgoing, outgoing.length, this.getHost(), this.getPort());
+            socket.send(packet);
 
             // Create streams to collect what is coming from the server
             byte[] retrieve = new byte[256];
             DatagramPacket incomingInfo = new DatagramPacket(retrieve, retrieve.length);
-            receive.receive(incomingInfo);
+            socket.receive(incomingInfo);
 
-            Card card = null;
-
-            // Prints to specified output stream
-            //out.write(card);
+            while(incomingInfo.getLength() != 0) {
+                ByteArrayInputStream incomingStream = new ByteArrayInputStream(retrieve);
+                ObjectInputStream objStream = new ObjectInputStream(incomingStream);
+                Card card = (Card) objStream.readObject();
+                out.println(card.toString());
+                out.flush();
+                objStream.close();
+                incomingStream.close();
+                retrieve = new byte[256];
+                incomingInfo = new DatagramPacket(retrieve, retrieve.length);
+                socket.receive(incomingInfo);
+            }
+            socket.close();
 
         } catch(IOException ioe) {
-            System.out.println(IO_ERROR);
-            System.out.println(FAILURE);
-        }
+            System.out.println(ioe.getMessage());
+            ioe.printStackTrace();
+            throw ioe;
+        } catch(ClassNotFoundException cnfe) {
+            System.err.println("Class could not be found." );
+            System.exit(FAILURE);
+        } // end try-catch
 
     } // end printToStream method
 
